@@ -1,0 +1,31 @@
+trigger:
+- main
+
+pool:
+  UI Agent
+
+steps:
+- task: Maven@2
+  inputs:
+    mavenPomFile: '$(Build.SourcesDirectory)\pom.xml'
+    options: '-DskiplTs--settings./maven/settings.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: true
+    sonarQubeRunAnalysis: false
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)'
+    Contents: |
+      **/target/*.war
+      *.sql
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
