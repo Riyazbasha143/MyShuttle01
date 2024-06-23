@@ -8,9 +8,9 @@ steps:
 - task: Maven@2
   inputs:
     mavenPomFile: '$(Build.SourcesDirectory)\pom.xml'
-    options: '-DskiplTs--settings./maven/settings.xml'
+    options: '-DskiplTs --settings ./maven/settings.xml'
     publishJUnitResults: true
-    testResultsFiles: '**/TEST-*.xml'
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
     javaHomeOption: 'JDKVersion'
     mavenVersionOption: 'Default'
     mavenAuthenticateFeed: true
